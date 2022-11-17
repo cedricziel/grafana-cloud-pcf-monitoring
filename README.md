@@ -31,7 +31,7 @@ need to check with your foundation administrator.
 [This page](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/cloudfoundryreceiver#authentication) contains instructions on how to retrieve the credentials needed from UAA.
 
 * `RLP_GATEWAY_ENDPOINT` - URL of the RLP gateway, typically `https://log-stream.<cf-system-domain>`
-* `RLP_GATEWAY_TLS_INSECURE` - `true/false` whether to skip TLS verify for the RLP gateway endpoint
+* `RLP_GATEWAY_TLS_INSECURE` - `true/false` whether to skip TLS verify for the RLP gateway endpoint. Default: `false`
 * `UAA_ENDPOINT` - URL of the UAA provider, typically `https://uaa.<cf-system-domain>`
 * `UAA_USERNAME` - name of the UAA user (required grant types/authorities described above)
 * `UAA_PASSWORD` - password of the UAA user
@@ -54,7 +54,7 @@ We need to supply the application with some environment variables for configurat
 * `GRAFANA_TOKEN` - The "Password / API Key" you noted down earlier
 
 * `RLP_GATEWAY_ENDPOINT` - URL of the RLP gateway, typically `https://log-stream.<cf-system-domain>`
-* `RLP_GATEWAY_TLS_INSECURE` - `true/false` whether to skip TLS verify for the RLP gateway endpoint
+* `RLP_GATEWAY_TLS_INSECURE` - `true/false` whether to skip TLS verify for the RLP gateway endpoint. Default: `false`
 * `UAA_ENDPOINT` - URL of the UAA provider, typically `https://uaa.<cf-system-domain>`
 * `UAA_USERNAME` - name of the UAA user (required grant types/authorities described above)
 * `UAA_PASSWORD` - password of the UAA user
