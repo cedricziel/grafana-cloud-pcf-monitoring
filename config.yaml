@@ -1,0 +1,55 @@
+extensions:
+  basicauth/metrics:
+    client_auth:
+      username: "${GRAFANA_USER_ID}"
+      password: "${GRAFANA_TOKEN}"
+  memory_ballast:
+    size_mib: 512
+
+exporters:
+  prometheusremotewrite:
+    endpoint: ${GRAFANA_REMOTE_WRITE_URL}
+    auth:
+      authenticator: basicauth/metrics
+
+processors:
+  batch:
+
+receivers:
+  cloudfoundry:
+    rlp_gateway:
+      endpoint: ${RLP_GATEWAY_ENDPOINT}
+      shard_id: opentelemetry
+      tls:
+        insecure_skip_verify: ${RLP_GATEWAY_TLS_INSECURE}
+    uaa:
+      endpoint: ${UAA_ENDPOINT}
+      username: ${UAA_USERNAME}
+      password: ${UAA_PASSWORD}
+      tls:
+        insecure_skip_verify: ${UAA_TLS_INSECURE}
+  # Otel-Collector Self-Diagnostics
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: "pcf-grafana-otel-collector"
+          scrape_interval: 5s
+          static_configs:
+            - targets: ["localhost:8888"]
+
+service:
+  extensions: [ basicauth/metrics ]
+  pipelines:
+    metrics:
+      receivers:  [ cloudfoundry, prometheus ]
+      processors: [ batch ]
+      exporters:  [ prometheusremotewrite ]
+  # Otel-Collector Self-Diagnostics
+  telemetry:
+    logs:
+      level: info
+      encoding: json
+      output_paths: ["stdout"]
+      error_output_paths: ["stdout"]
+    metrics:
+      address: localhost:8888

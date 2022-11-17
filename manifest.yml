@@ -1,0 +1,11 @@
+---
+applications:
+- name: grafana-pcf-monitoring
+  instances: 2
+  memory: 1G
+  buildpacks:
+    - https://github.com/cloudfoundry/binary-buildpack.git
+  no-route: true
+  env:
+    RLP_GATEWAY_TLS_INSECURE: false
+    UAA_TLS_INSECURE: false
