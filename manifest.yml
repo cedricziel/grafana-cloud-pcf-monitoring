@@ -6,6 +6,7 @@ applications:
   buildpacks:
     - https://github.com/cloudfoundry/binary-buildpack.git
   no-route: true
+  health-check-type: process
   env:
     # Grafana Cloud credentials
     GRAFANA_USER_ID:
@@ -20,3 +21,5 @@ applications:
     # RLP Gateway
     RLP_GATEWAY_ENDPOINT: https://uaa.<cf-system-domain>
     RLP_GATEWAY_TLS_INSECURE: false
+    # Set the value of the grafana.cf.cluster attribute to every signal collected
+    CF_ENV: unknown-env

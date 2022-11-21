@@ -4,7 +4,8 @@ extensions:
       username: "${GRAFANA_USER_ID}"
       password: "${GRAFANA_TOKEN}"
   memory_ballast:
-    size_mib: 512
+    # The ballast should be configured to be 1/3 to 1/2 of the memory allocated to the collector.
+    size_mib: 750
 
 exporters:
   prometheusremotewrite:
@@ -14,6 +15,17 @@ exporters:
 
 processors:
   batch:
+  memory_limiter:
+    check_interval: 1s
+    # Maximum amount of memory, in MiB, targeted to be allocated by the process heap.
+    # Note that typically the total memory usage of process will be about 50MiB higher than this value.
+    # This defines the hard limit.
+    limit_mib: 1800
+  resource:
+    attributes:
+    - key: grafana.cf.env
+      value: ${CF_CLUSTER}
+      action: upsert
 
 receivers:
   cloudfoundry:
@@ -38,11 +50,11 @@ receivers:
             - targets: ["localhost:8888"]
 
 service:
-  extensions: [ basicauth/metrics ]
+  extensions: [ basicauth/metrics,  memory_ballast ]
   pipelines:
     metrics:
       receivers:  [ cloudfoundry, prometheus ]
-      processors: [ batch ]
+      processors: [ memory_limiter, batch ]
       exporters:  [ prometheusremotewrite ]
   # Otel-Collector Self-Diagnostics
   telemetry:
