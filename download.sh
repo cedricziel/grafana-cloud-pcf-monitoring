@@ -20,5 +20,6 @@ popd
 
 echo "   -> Moving OpenTelemetry collector"
 mv .download/otelcol-contrib .
+chmod +x otelcol-contrib
 
 echo "   Done."
