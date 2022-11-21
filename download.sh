@@ -3,6 +3,9 @@
 export OTEL_VERSION=${OTEL_VERSION:-"0.64.1"}
 export OS=${OS:-"linux_amd64"}
 
+echo "   -> Cleaning directory"
+rm otelcol-contrib;
+
 mkdir -p .download
 
 pushd .download
