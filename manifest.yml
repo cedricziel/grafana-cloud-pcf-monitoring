@@ -7,5 +7,16 @@ applications:
     - https://github.com/cloudfoundry/binary-buildpack.git
   no-route: true
   env:
-    RLP_GATEWAY_TLS_INSECURE: false
+    # Grafana Cloud credentials
+    GRAFANA_USER_ID:
+    GRAFANA_TOKEN:
+    GRAFANA_REMOTE_WRITE_URL:
+    # Authentication
+    # https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/cloudfoundryreceiver#authentication
     UAA_TLS_INSECURE: false
+    UAA_ENDPOINT: https://log-stream.<cf-system-domain>
+    UAA_USERNAME: change-this
+    UAA_PASSWORD: set-password
+    # RLP Gateway
+    RLP_GATEWAY_ENDPOINT: https://uaa.<cf-system-domain>
+    RLP_GATEWAY_TLS_INSECURE: false

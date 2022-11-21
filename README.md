@@ -41,9 +41,7 @@ need to check with your foundation administrator.
 
 This app is supposed to use the binary buildpack.
 
-```bash
-cf push grafana-pcf-monitoring
-```
+**Please inspect the `manifest.yml` file and adjust the variables.**
 
 ### Prepare your environment variables
 
@@ -60,12 +58,28 @@ We need to supply the application with some environment variables for configurat
 * `UAA_PASSWORD` - password of the UAA user
 * `UAA_TLS_INSECURE` - `true/false` whether to skip TLS verify for the UAA endpoint. Default: `false`
 
-### Apply environment variables
+### Push your app
 
-For every environment variable above, set it through the CLI.
+```bash
+cf push grafana-pcf-monitoring
+```
+
+### Change environment variables (optional)
+
+For every environment variable above, you can set it through the CLI.
 
 For example:
 
 ```bash
 cf set-env grafana-pcf-monitoring GRAFANA_REMOTE_WRITE_URL https://...../api/prom/push
+```
+
+## Scaling
+
+The RLP gateway uses sharding to enable most-efficient distribution to all subscribers.
+
+Thanks to that, you can effectively increase the number of instances that collect the metrics.
+
+```bash
+cf scale grafana-pcf-monitoring -i 5
 ```
